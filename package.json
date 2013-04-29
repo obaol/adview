@@ -1,0 +1,12 @@
+{
+  "name": "ad-view",
+  "description": "Ad View",
+  "version": "0.0.1",
+  "author": "My name",
+  "private": true,
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+  }
+}

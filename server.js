@@ -26,10 +26,19 @@ http.createServer(function (req, res) {
     case '/showBanner':
 
       var fileName = availableCreatives[Math.floor(Math.random() * availableCreatives.length)];
+      var fileExt = fileName.split('.')[1];
+
+      var embedCode;
+
+      if (fileExt === 'swf') {
+        embedCode = '<object width="300" height="250" data="/creatives/' + fileName + '"></object>';
+      } else {
+        embedCode = '<img src="/creatives/' + fileName + '">';
+      }
 
       console.log('Serving banner');
       res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end('<html><body style="margin: 0;"><img src="/creatives/' + fileName + '"></body></html>');
+      res.end('<html><body style="margin: 0;">' + embedCode + '</body></html>');
       break;
 
     default:

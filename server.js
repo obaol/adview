@@ -52,7 +52,7 @@ http.createServer(function (req, res) {
 
 }).listen(port, '0.0.0.0');
 
-console.log('Server running at http://127.0.0.1:' + port);
+console.log('Server running at http://0.0.0.0:' + port);
 
 
 

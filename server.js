@@ -8,6 +8,8 @@ var fileServer = new nodeStatic.Server('./public');
 var creativeDirectory = path.join(__dirname, 'public', 'creatives');
 var availableCreatives = fs.readdirSync(creativeDirectory);
 
+var port = process.env.PORT || 5000;
+
 
 // Start the server
 http.createServer(function (req, res) {
@@ -48,9 +50,9 @@ http.createServer(function (req, res) {
   }
 
 
-}).listen(1337, '0.0.0.0');
+}).listen(port, '0.0.0.0');
 
-console.log('Server running at http://127.0.0.1:1337/');
+console.log('Server running at http://127.0.0.1:' + port);
 
 
 

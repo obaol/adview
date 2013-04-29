@@ -38,14 +38,19 @@ http.createServer(function (req, res) {
         embedCode = '<img src="/creatives/' + fileName + '">';
       }
 
-      console.log('Serving banner');
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<html><body style="margin: 0;">' + embedCode + '</body></html>');
       break;
 
     default:
       if (req.url === '/favicon.ico') return;
-      fileServer.serveFile(req.url, 200, {}, req, res, function(){});
+      fileServer.serveFile(req.url, 200, {}, req, res).addListener('error', function(err){
+        if (err) {
+          console.error("Error serving " + req.url + " - " + err.message);
+          res.writeHead(404, 'Not found');
+          res.end('File not found - (Owen)');
+        }
+      });
 
   }
 

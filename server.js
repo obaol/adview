@@ -35,7 +35,7 @@ http.createServer(function (req, res) {
       if (fileExt === 'swf') {
         embedCode = '<object width="300" height="250" data="/creatives/' + fileName + '"></object>';
       } else {
-        embedCode = '<img src="/creatives/' + fileName + '">';
+        embedCode = '<a href="http://cnn.com" target="_blank"><img src="/creatives/' + fileName + '"></a>';
       }
 
       res.writeHead(200, {'Content-Type': 'text/html'});

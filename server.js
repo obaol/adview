@@ -1,7 +1,10 @@
 var fs = require('fs');
+var url = require('url');
 var path = require('path');
 var http = require('http');
 var nodeStatic = require('node-static');
+
+var renderAd = require('./lib/render-ad.js');
 
 var fileServer = new nodeStatic.Server('./public');
 
@@ -28,15 +31,7 @@ http.createServer(function (req, res) {
     case '/showBanner':
 
       var fileName = availableCreatives[Math.floor(Math.random() * availableCreatives.length)];
-      var fileExt = fileName.split('.')[1];
-
-      var embedCode;
-
-      if (fileExt === 'swf') {
-        embedCode = '<object width="300" height="250" data="/creatives/' + fileName + '"></object>';
-      } else {
-        embedCode = '<a href="http://cnn.com" target="_blank"><img src="/creatives/' + fileName + '"></a>';
-      }
+      var embedCode = renderAd('/creatives/' + fileName, 'http://bing.com');
 
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<html><body style="margin: 0;">' + embedCode + '</body></html>');
@@ -44,7 +39,8 @@ http.createServer(function (req, res) {
 
     default:
       if (req.url === '/favicon.ico') return;
-      fileServer.serveFile(req.url, 200, {}, req, res).addListener('error', function(err){
+      var fileName = url.parse(req.url).pathname;
+      fileServer.serveFile(fileName, 200, {}, req, res).addListener('error', function(err){
         if (err) {
           console.error("Error serving " + req.url + " - " + err.message);
           res.writeHead(404, 'Not found');

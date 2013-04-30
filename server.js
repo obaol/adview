@@ -2,6 +2,7 @@ var fs = require('fs');
 var url = require('url');
 var path = require('path');
 var http = require('http');
+var jade = require('jade');
 
 var express = require('express');
 
@@ -23,7 +24,20 @@ app.use(express.bodyParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.errorHandler());
 
-// Hit the home page
+
+// --------
+// Admin UI
+// --------
+
+app.get('/admin', function(req, res){
+  res.render('index.jade');
+});
+
+
+// ---------
+// Serve Ads
+// ---------
+
 app.get('/', function(req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end('<iframe src="/showBanner" width="300" height="250" frameborder="0" />');
@@ -37,6 +51,8 @@ app.get('/showBanner', function(req, res) {
   res.end('<html><body style="margin: 0;">' + embedCode + '</body></html>');
 });
 
+
+// Start the server
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

@@ -1,5 +1,5 @@
 doctype 5
-html(lang="en", ng-app)
+html(lang="en", ng-app="AdView")
   head
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
@@ -22,11 +22,11 @@ html(lang="en", ng-app)
               a(href="/admin/stats") Stats
 
     div.container
-      h1 Welcome to AdView
-      h3 You can manage your ads here
+      div.content(ng-view)
 
       hr
       p &copy; 2013 AOL. All rights reserved
 
     script(type="text/javascript", src="/js/angular.js")
     script(type="text/javascript", src="/js/angular-resource.js")
+    script(type="text/javascript", src="/js/client.js")

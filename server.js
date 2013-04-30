@@ -59,6 +59,10 @@ app.get('/admin*', function(req, res){
   res.render('index.jade');
 });
 
+app.get('/template/:name', function(req, res){
+  res.render('templates/' + req.params.name + '.jade');
+});
+
 
 // ---------
 // Serve Ads

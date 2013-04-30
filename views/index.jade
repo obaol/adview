@@ -2,9 +2,26 @@ doctype 5
 html(lang="en")
   head
     meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title AdView - Manage your ads
+    link(rel="stylesheet", type="text/css", href="/css/bootstrap.css")
+    link(rel="stylesheet", type="text/css", href="/css/bootstrap-responsive.css")
 
   body
+
+    div.navbar
+      div.navbar-inner
+        div.container
+          a.brand(href="/admin") AdView
+          ul.nav
+            li.divider-vertical
+            li
+              a(href="/admin/campaigns") Campaigns
+            li.divider-vertical
+            li
+              a(href="/admin/stats") Stats
+
+
     h1 Welcome to AdView
     h3 You can manage your ads here
 

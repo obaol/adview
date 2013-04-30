@@ -3,10 +3,12 @@ var url = require('url');
 var path = require('path');
 var http = require('http');
 var jade = require('jade');
-
 var express = require('express');
+var redis = require('redis');
 
 var renderAd = require('./lib/render-ad.js');
+
+var conn = redis.createClient();
 
 var creativeDirectory = path.join(__dirname, 'public', 'creatives');
 var availableCreatives = fs.readdirSync(creativeDirectory);
@@ -25,11 +27,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.errorHandler());
 
 
+// ---
+// API
+// ---
+
+app.get('/api/campaigns', function(req, res){
+  conn.hgetall('campaigns', function(err, data){
+
+    // Create a new array to hold campaign objects
+    var campaigns = [];
+
+    // Loop through each JSON String and convert to an Object
+    for (var key in data) {
+      var thisRecord = data[key];
+      campaigns.push(JSON.parse(thisRecord));
+    }
+
+    // Respond with the array of objects
+    res.json(campaigns);
+
+  });
+
+});
+
+
 // --------
 // Admin UI
 // --------
 
-app.get('/admin', function(req, res){
+app.get('/admin*', function(req, res){
   res.render('index.jade');
 });
 

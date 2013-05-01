@@ -82,10 +82,15 @@ app.get('/showBanner', function(req, res) {
 
       var campaign = JSON.parse(data);
       var fileName = '/creatives/' + campaign.creative;
-      var embedCode = renderAd(fileName, campaign.link);
+      var link = '/trackClick/' + campaign.id;
+      var embedCode = renderAd(fileName, link);
 
       // Used to be res.end() but changed to res.send()
       res.send('<html><body style="margin: 0;">' + embedCode + '</body></html>');
+
+      // Track the impression
+      conn.incr('impressions:count');
+      conn.incr('impressions:count:' + campaign.id);
 
     });
   });
@@ -103,6 +108,11 @@ app.get('/trackClick/:id', function(req, res){
     if (data) {
       var campaign = JSON.parse(data);
       link = campaign.link;
+
+      // Track the click
+      conn.incr('clicks:count');
+      conn.incr('clicks:count:' + campaign.id);
+
     } else {
       link = 'http://www.aolnetworks.com';
     }

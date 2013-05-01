@@ -83,10 +83,23 @@ app.get('/api/campaignStats/:id', function(req, res){
 // MODIFY an existing campaign
 app.post('/api/campaigns/:id', function(req, res){
 
-  console.log('The new data is', req.body);
-  console.log('And is of type', typeof req.body);
+  var errors = [];
+  var campaign = req.body;
 
-  res.json({});
+  if (campaign.name.length === 0) errors.push('No campaign name supplied');
+  if (campaign.link.length === 0) errors.push('No link supplied');
+  if (campaign.link.substring(0, 4) !== 'http') errors.push('Link is not a valid URL');
+
+  if (errors.length > 0) {
+    // oh no - we have errors
+    res.json({errors: errors});
+  } else {
+    // everything looks fine
+    var data = JSON.stringify(campaign);
+    conn.hset('campaigns', campaign.id, data, function(err, reply){
+      res.json({}); // all ok
+    });
+  }
 
 });
 

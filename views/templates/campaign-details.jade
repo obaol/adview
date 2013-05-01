@@ -1,6 +1,13 @@
 h3 Campaign Details
 
 .row
+  .span12.alert.alert-error(ng-show="errors")
+    p
+      strong Sorry, there were errors:
+    ul
+      li(ng-repeat="error in errors") {{error}}
+
+.row
   .span12
     form
       fieldset

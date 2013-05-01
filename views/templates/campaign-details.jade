@@ -14,6 +14,9 @@ h3 Campaign Details
         label Link:
         input.input-xlarge(type="text", ng-model="campaign.link")
 
+        p
+          input.btn.btn-primary(type="submit", value="Save Changes", ng-click="save()")
+
     a(href="/admin/campaigns")
       i.icon-arrow-left
       |  Back to Campaigns

@@ -24,6 +24,13 @@ window.CampaignsCtrl = function($scope, Campaign){
   $scope.campaigns = Campaign.query();
 };
 
-window.CampaignDetailsCtrl = function($scope, $route, Campaign){
+window.CampaignDetailsCtrl = function($scope, $route, $location, Campaign){
   $scope.campaign = Campaign.get({id: $route.current.params.id});
+
+  $scope.save = function(){
+    $scope.campaign.$save(function(res){
+      console.log($scope.campaign.id, 'has been saved!');
+      $location.path('/admin/campaigns');
+    });
+  };
 };

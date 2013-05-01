@@ -80,6 +80,17 @@ app.get('/api/campaignStats/:id', function(req, res){
   });
 });
 
+// MODIFY an existing campaign
+app.post('/api/campaigns/:id', function(req, res){
+
+  console.log('The new data is', req.body);
+  console.log('And is of type', typeof req.body);
+
+  res.json({});
+
+});
+
+
 function getStats(campaignId, cb) {
   var commands = [];
 

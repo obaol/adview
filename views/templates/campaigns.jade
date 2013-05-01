@@ -10,8 +10,14 @@
       tr
         th Campaigns
         th Link
+        th Impressions
+        th Clicks
+        th CTR (%)
       tr(ng-repeat="campaign in campaigns | filter:search")
         td {{campaign.name}}
         td 
           a(href="{{campaign.link}}", target="_blank") {{campaign.link}}
+        td {{campaign.impressions}}
+        td {{campaign.clicks}}
+        td {{campaign.clicks / campaign.impressions * 100 | number:3}}
 

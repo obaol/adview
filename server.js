@@ -77,7 +77,7 @@ app.get('/showBanner', function(req, res) {
     // Select an ad at random
     var key = availableKeys[Math.floor(Math.random() * availableKeys.length)];
 
-    // Pull details of this add from Redis
+    // Pull details of this ad from Redis
     conn.hget('campaigns', key, function(err, data){
 
       var campaign = JSON.parse(data);
@@ -88,6 +88,27 @@ app.get('/showBanner', function(req, res) {
       res.send('<html><body style="margin: 0;">' + embedCode + '</body></html>');
 
     });
+  });
+});
+
+app.get('/trackClick/:id', function(req, res){
+
+  var key = req.params.id;
+
+  // Pull details of this ad from Redis
+  conn.hget('campaigns', key, function(err, data){
+
+    var link;
+
+    if (data) {
+      var campaign = JSON.parse(data);
+      link = campaign.link;
+    } else {
+      link = 'http://www.aolnetworks.com';
+    }
+
+    res.writeHead(302, {'Location': link});
+    res.end();
 
   });
 

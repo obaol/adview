@@ -29,6 +29,7 @@ var auth = express.basicAuth('admin', 'password');
 // API
 // ---
 
+// Get all campaign data
 app.get('/api/campaigns', function(req, res){
   conn.hgetall('campaigns', function(err, data){
 
@@ -45,7 +46,20 @@ app.get('/api/campaigns', function(req, res){
     res.json(campaigns);
 
   });
+});
 
+// Get both impressions and clicks for a given campaign id
+app.get('/api/campaignStats/:id', function(req, res){
+  var key = req.params.id;
+  conn.get('impressions:count:' + key, function(err, impressions) {
+    conn.get('clicks:count:' + key, function(err, clicks) {
+      res.json({
+        impressions: Number(impressions || 0),
+        clicks:      Number(clicks || 0)
+      });
+    });
+
+  });
 });
 
 

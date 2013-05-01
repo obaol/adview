@@ -1,10 +1,17 @@
-h3 Campaigns
+.row
+  .span8
+    h3 Campaigns
+  .span4.text-right
+    input(type="search", placeholder="Search", ng-model="search")
 
 .row
   .span12
     table.table
       tr
         th Campaigns
-      tr(ng-repeat="campaign in campaigns")
+        th Link
+      tr(ng-repeat="campaign in campaigns | filter:search")
         td {{campaign.name}}
+        td 
+          a(href="{{campaign.link}}", target="_blank") {{campaign.link}}
 

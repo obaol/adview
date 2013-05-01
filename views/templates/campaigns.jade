@@ -1,1 +1,10 @@
-h1 This is the Campaigns view
+h3 Campaigns
+
+.row
+  .span12
+    table.table
+      tr
+        th Campaigns
+      tr(ng-repeat="campaign in campaigns")
+        td {{campaign.name}}
+

@@ -1,5 +1,4 @@
-var redis = require('redis');
-var conn = redis.createClient();
+var conn = require('./lib/redis')();
 var async = require('async');
 
 var commands = [];

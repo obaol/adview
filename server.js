@@ -4,11 +4,10 @@ var path = require('path');
 var http = require('http');
 var jade = require('jade');
 var express = require('express');
-var redis = require('redis');
+var conn = require('./lib/redis')();
 
 var renderAd = require('./lib/render-ad.js');
 
-var conn = redis.createClient();
 
 // Make a new app instance
 var app = express();
@@ -85,6 +84,7 @@ app.get('/showBanner', function(req, res) {
       var fileName = '/creatives/' + campaign.creative;
       var embedCode = renderAd(fileName, campaign.link);
 
+      // Used to be res.end() but changed to res.send()
       res.send('<html><body style="margin: 0;">' + embedCode + '</body></html>');
 
     });

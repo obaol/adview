@@ -43,10 +43,25 @@ app.get('/api/campaigns', function(req, res){
       campaigns.push(JSON.parse(thisRecord));
     }
 
+    // Get the stats for EVERY campaign
+    var commands = campaigns.map(function(campaign){
+      return function(cb) { getStats(campaign.id, cb); };
+    });
 
+    async.parallel(commands, function(err, data){
 
-    // Respond with the array of objects
-    res.json(campaigns);
+      var campaignsWithStats = campaigns.map(function(campaign, i){
+
+        var stats = data[i];
+        campaign.impressions = stats.impressions;
+        campaign.clicks = stats.clicks;
+
+      });
+
+      // Respond with the array of objects
+      res.json(campaigns);
+
+    });
 
   });
 });

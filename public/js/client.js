@@ -19,3 +19,4 @@ angular.module('AdView', ['ngResource'], function($routeProvider, $locationProvi
 window.CampaignsCtrl = function($scope, Campaign){
   $scope.campaigns = Campaign.query();
 };
+

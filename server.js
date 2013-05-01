@@ -10,9 +10,6 @@ var renderAd = require('./lib/render-ad.js');
 
 var conn = redis.createClient();
 
-var creativeDirectory = path.join(__dirname, 'public', 'creatives');
-var availableCreatives = fs.readdirSync(creativeDirectory);
-
 // Make a new app instance
 var app = express();
 
@@ -74,11 +71,26 @@ app.get('/', function(req, res) {
 });
 
 app.get('/showBanner', function(req, res) {
-  var fileName = availableCreatives[Math.floor(Math.random() * availableCreatives.length)];
-  var embedCode = renderAd('/creatives/' + fileName, 'http://bing.com');
 
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('<html><body style="margin: 0;">' + embedCode + '</body></html>');
+  // Get all available ads to serve
+  conn.hkeys('campaigns', function(err, availableKeys){
+
+    // Select an ad at random
+    var key = availableKeys[Math.floor(Math.random() * availableKeys.length)];
+
+    // Pull details of this add from Redis
+    conn.hget('campaigns', key, function(err, data){
+
+      var campaign = JSON.parse(data);
+      var fileName = '/creatives/' + campaign.creative;
+      var embedCode = renderAd(fileName, campaign.link);
+
+      res.send('<html><body style="margin: 0;">' + embedCode + '</body></html>');
+
+    });
+
+  });
+
 });
 
 

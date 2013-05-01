@@ -22,6 +22,8 @@ app.use(express.bodyParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.errorHandler());
 
+var auth = express.basicAuth('admin', 'password');
+
 
 // ---
 // API
@@ -51,7 +53,7 @@ app.get('/api/campaigns', function(req, res){
 // Admin UI
 // --------
 
-app.get('/admin*', function(req, res){
+app.get('/admin*', auth, function(req, res){
   res.render('index.jade');
 });
 

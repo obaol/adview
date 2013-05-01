@@ -3,6 +3,7 @@ var url = require('url');
 var path = require('path');
 var http = require('http');
 var jade = require('jade');
+var async = require('async');
 var express = require('express');
 var conn = require('./lib/redis')();
 
@@ -42,6 +43,8 @@ app.get('/api/campaigns', function(req, res){
       campaigns.push(JSON.parse(thisRecord));
     }
 
+
+
     // Respond with the array of objects
     res.json(campaigns);
 
@@ -50,17 +53,27 @@ app.get('/api/campaigns', function(req, res){
 
 // Get both impressions and clicks for a given campaign id
 app.get('/api/campaignStats/:id', function(req, res){
-  var key = req.params.id;
-  conn.get('impressions:count:' + key, function(err, impressions) {
-    conn.get('clicks:count:' + key, function(err, clicks) {
-      res.json({
-        impressions: Number(impressions || 0),
-        clicks:      Number(clicks || 0)
-      });
-    });
-
+  getStats(req.params.id, function(err, data) {
+    res.json(data);
   });
 });
+
+function getStats(campaignId, cb) {
+  var commands = [];
+
+  // Get impressions
+  commands.push(function(cb) { conn.get('impressions:count:' + campaignId, cb); });
+
+  // Get clicks
+  commands.push(function(cb) { conn.get('clicks:count:' + campaignId, cb); });
+
+  async.parallel(commands, function(err, data){
+    cb(null, {
+      impressions: Number(data[0] || 0),
+      clicks:      Number(data[1] || 0)
+    });
+  });
+}
 
 
 // --------

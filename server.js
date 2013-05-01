@@ -66,6 +66,13 @@ app.get('/api/campaigns', function(req, res){
   });
 });
 
+// Get ONE campaign
+app.get('/api/campaigns/:id', function(req, res){
+  conn.hget('campaigns', req.params.id, function(err, data){
+    res.send(data);
+  });
+});
+
 // Get both impressions and clicks for a given campaign id
 app.get('/api/campaignStats/:id', function(req, res){
   getStats(req.params.id, function(err, data) {

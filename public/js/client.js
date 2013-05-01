@@ -5,6 +5,10 @@ angular.module('AdView', ['ngResource'], function($routeProvider, $locationProvi
       templateUrl: '/template/campaigns',
       controller: CampaignsCtrl
     })
+    .when('/admin/campaigns/:id', {
+      templateUrl: '/template/campaign-details',
+      controller: CampaignDetailsCtrl
+    })
     .otherwise({
       templateUrl: '/template/home'
     });
@@ -13,10 +17,13 @@ angular.module('AdView', ['ngResource'], function($routeProvider, $locationProvi
 
 })
 .factory('Campaign', function($resource){
-  return $resource('/api/campaigns');
+  return $resource('/api/campaigns/:id', {id: '@id'});
 });
 
 window.CampaignsCtrl = function($scope, Campaign){
   $scope.campaigns = Campaign.query();
 };
 
+window.CampaignDetailsCtrl = function($scope, $route, Campaign){
+  $scope.campaign = Campaign.get({id: $route.current.params.id});
+};

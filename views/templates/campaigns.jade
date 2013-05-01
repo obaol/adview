@@ -14,10 +14,11 @@
         th Clicks
         th CTR (%)
       tr(ng-repeat="campaign in campaigns | filter:search")
-        td {{campaign.name}}
+        td 
+          a(href="/admin/campaigns/{{campaign.id}}") {{campaign.name}}
         td 
           a(href="{{campaign.link}}", target="_blank") {{campaign.link}}
         td {{campaign.impressions}}
         td {{campaign.clicks}}
-        td {{campaign.clicks / campaign.impressions * 100 | number:3}}
+        td {{campaign.impressions > 0 && campaign.clicks / campaign.impressions * 100 | number:3}}
 

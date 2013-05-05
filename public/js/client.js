@@ -31,9 +31,10 @@ window.CampaignDetailsCtrl = function($scope, $route, $location, Campaign){
   $scope.campaign = Campaign.get({id: $route.current.params.id});
 
   $scope.save = function(){
-    $scope.campaign.$save(function(res){
-      if (res.errors) {
-        $scope.errors = res.errors;
+    $scope.campaign.$save(function(campaign){
+      if (campaign.errors) {
+        $scope.campaign = campaign;
+        $scope.errors = campaign.errors;
         return;
       }
       console.log($scope.campaign.id, 'has been saved!');

@@ -92,7 +92,8 @@ app.post('/api/campaigns/:id', function(req, res){
 
   if (errors.length > 0) {
     // oh no - we have errors
-    res.json({errors: errors});
+    campaign.errors = errors;
+    res.json(campaign);
   } else {
     // everything looks fine
     var data = JSON.stringify(campaign);
